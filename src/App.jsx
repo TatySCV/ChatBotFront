@@ -1,8 +1,8 @@
-function App() {
+import { RouterProvider } from "react-router-dom";
+import { defaultRouter } from "./router/default.router";
 
-  return (
-    <h1 className="underline">Hola</h1>
-  )
+function App() {
+  return <RouterProvider router={defaultRouter} />;
 }
 
-export default App
+export default App;
