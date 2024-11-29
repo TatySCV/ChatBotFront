@@ -1,5 +1,6 @@
 import React from "react";
 import { createBrowserRouter, Navigate } from "react-router-dom";
+import Login from "../pages/Login";
 
 export const defaultRouter = createBrowserRouter([
   {
@@ -9,6 +10,10 @@ export const defaultRouter = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <div>Login</div>,
+    element: <Login />,
+  },
+  {
+    path: "*",
+    element: <Navigate to={"/login"} />,
   },
 ]);
