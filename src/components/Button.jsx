@@ -4,7 +4,7 @@ function Button({ type = 'button', children, onClick }) {
       <button
         type={type}
         onClick={onClick}
-        className="bg-purple-600 text-white py-2 px-4 rounded hover:bg-purple-700 transition-all"
+        className="bg-primary text-white py-2 px-4 rounded hover:bg-purple transition-all"
       >
         {children}
       </button>
