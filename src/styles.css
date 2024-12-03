@@ -1,0 +1,4 @@
+/* styles.css */
+.custom-spin .ant-spin-dot-item {
+    @apply bg-primary; /* Tailwind usa clases como bg-primary, bg-blue-500, etc. */
+  }

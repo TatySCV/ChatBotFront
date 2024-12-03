@@ -54,9 +54,9 @@ function Chatbot() {
     // Enviar mensaje al servicio (simulación de llamada al backend)
     const respuestaBot = await chatService.sendMensaje(mensaje, conversacion_nueva);
     
-    // Se agrega la respuesta del bot
+    // Se agrega la respuesta del bot con el efecto de tipeo
     const nuevoMensajeBot = {
-      contenido: <TypewriterBubble texto={respuestaBot} />, // Respuesta del bot con efecto de tipeo
+      contenido: <TypewriterBubble texto={respuestaBot} onComplete={handleRefreshMessages} />, // Respuesta del bot con efecto de tipeo
       remitente: "bot",
       timestamp: new Date().toLocaleTimeString(),
     };
@@ -71,6 +71,16 @@ function Chatbot() {
         handleSendMessage(mensaje); // Llama a la función para enviar el mensaje
         setMensaje(""); // Limpia el campo de entrada
       }
+    }
+  };
+
+  // Recargar los mensajes desde la base de datos después de que termine el tipeo
+  const handleRefreshMessages = async () => {
+    const response = await chatService.getMensajes(id);
+    if (response) {
+      setMensajes(response.mensajes);
+    } else {
+      console.error("Error al obtener los mensajes actualizados");
     }
   };
 
