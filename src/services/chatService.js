@@ -71,6 +71,22 @@ const chatService = {
       return { contenido: "Hubo un error al enviar el mensaje" };
     }
   },
+
+  crearConversacion: async (user) => {
+    try {
+      const response = await axios.post(`${API_URL}/crear-conversacion/?user=${user}`);
+
+      if (response.status === 200) {
+        console.log("Conversación creada:", response.data);
+        return response.data;
+      } else {
+        console.error("Error al crear una nueva conversación");
+      }
+    } catch (error) {
+      console.error("Error al crear una nueva conversación error:", error);
+    }
+  },
+
 };
 
 export default chatService;
