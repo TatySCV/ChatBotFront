@@ -1,26 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import Typewriter from "typewriter-effect";
 
 function TypewriterBubble({ texto, onComplete }) {
-  const [mostrarTexto, setMostrarTexto] = useState("");
-  const [typingIndex, setTypingIndex] = useState(0);
+  const [isTypingComplete, setIsTypingComplete] = useState(false);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      if (typingIndex < texto.length) {
-        setMostrarTexto((prev) => prev + texto[typingIndex]);
-        setTypingIndex(typingIndex + 1);
-      } else {
-        clearInterval(timer);
-        if (onComplete) {
-          onComplete(); // Llamamos al callback para indicar que terminó el tipeo
-        }
-      }
-    }, 50); // Intervalo entre cada carácter
+  console.log("Texto recibido por TypewriterBubble:", texto);
 
-    return () => clearInterval(timer); // Limpiar el intervalo si el componente se desmonta
-  }, [texto, typingIndex, onComplete]);
-
-  return <div>{mostrarTexto}</div>;
+  return (
+    <div>
+      {isTypingComplete ? (
+        <span>{texto}</span>
+      ) : (
+        <Typewriter
+          onInit={(typewriter) => {
+            typewriter
+              .typeString(texto)
+              .callFunction(() => {
+                setIsTypingComplete(true);
+                if (onComplete) onComplete();
+              })
+              .start();
+          }}
+        />
+      )}
+    </div>
+  );
 }
 
 export default TypewriterBubble;

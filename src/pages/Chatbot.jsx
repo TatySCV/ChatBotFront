@@ -77,7 +77,7 @@ function Chatbot() {
 
     // Agregar la respuesta del bot al estado
     const nuevoMensajeBot = {
-      contenido: <TypeWriterBubble text={response.respuesta_bot} />,
+      contenido: response.respuesta_bot.trim(),
       remitente: "bot",
       timestamp: new Date().toLocaleTimeString(),
     };
