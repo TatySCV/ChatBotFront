@@ -14,11 +14,12 @@ function Chatbot() {
   const [titulo, setTitulo] = useState("");
   const [fecha, setFecha] = useState("");
   const [mensaje, setMensaje] = useState(""); // Estado para el mensaje
+  const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     const fetchMensajes = async () => {
       try {
-        const response = await chatService.getMensajes(id);
+        const response = await chatService.getMensajes(id, user);
         if (response) {
           setMensajes(response.mensajes);
           setTitulo(response.titulo);
@@ -35,7 +36,7 @@ function Chatbot() {
   }, [id]);
 
   const handleSendMessage = async (mensaje) => {
-    // Se agrega el mensaje del usuario
+    // Agregar el mensaje del usuario al estado
     const nuevoMensajeUsuario = {
       contenido: mensaje,
       remitente: "usuario",
@@ -43,20 +44,40 @@ function Chatbot() {
     };
     setMensajes((prevMensajes) => [...prevMensajes, nuevoMensajeUsuario]);
 
-    const conversacion_nueva = {
-      id_conversacion: id,
+    const conversacionActual = {
+      id_conversacion: id || 0, // Usa `0` si el ID no está definido
       titulo_conversacion: titulo,
       fecha_creacion: fecha,
     };
 
-    console.log("Conversación:", conversacion_nueva);
+    console.log("Conversación antes del envío:", conversacionActual);
 
-    // Enviar mensaje al servicio (simulación de llamada al backend)
-    const respuestaBot = await chatService.sendMensaje(mensaje, conversacion_nueva);
-    
-    // Se agrega la respuesta del bot con el efecto de tipeo
+    // Enviar el mensaje al backend
+    const response = await chatService.sendMensaje(
+      mensaje,
+      conversacionActual,
+      user
+    );
+
+    if (response.id_conversacion && conversacionActual.id_conversacion === 0) {
+      // Si se creó una nueva conversación, actualiza el ID en el estado
+      console.log(
+        "Nueva conversación creada con ID:",
+        response.id_conversacion
+      );
+      setTitulo(response.titulo_conversacion || "Conversación con el bot");
+      setFecha(new Date().toLocaleTimeString());
+      // Cambia el ID en la URL para reflejar el nuevo ID de conversación
+      window.history.replaceState(
+        null,
+        "",
+        `/chat/${response.id_conversacion}`
+      );
+    }
+
+    // Agregar la respuesta del bot al estado
     const nuevoMensajeBot = {
-      contenido: <TypewriterBubble texto={respuestaBot} onComplete={handleRefreshMessages} />, // Respuesta del bot con efecto de tipeo
+      contenido: <TypeWriterBubble text={response.respuesta_bot} />,
       remitente: "bot",
       timestamp: new Date().toLocaleTimeString(),
     };
@@ -76,7 +97,7 @@ function Chatbot() {
 
   // Recargar los mensajes desde la base de datos después de que termine el tipeo
   const handleRefreshMessages = async () => {
-    const response = await chatService.getMensajes(id);
+    const response = await chatService.getMensajes(id, user);
     if (response) {
       setMensajes(response.mensajes);
     } else {
@@ -107,7 +128,7 @@ function Chatbot() {
             className="flex-grow" // El campo de texto ocupa el espacio disponible
             onKeyDown={handleKeyDown} // Añadimos el evento para prevenir la acción de Enter
           />
-          
+
           {/* Botón de enviar */}
           <SendButton onSendMessage={handleSendMessage} mensaje={mensaje} />
         </div>
