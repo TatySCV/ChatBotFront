@@ -5,7 +5,7 @@ const API_URL = "http://localhost:9010/general/chatbot";
 const chatService = {
   getConversaciones: async (user) => {
     try {
-      const response = await axios.get(
+      const response = await axios.post(
         `${API_URL}/conversaciones/?user=${user}`
       ); // Ajusta el endpoint según tu backend
       if (response.status === 200) {

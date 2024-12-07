@@ -77,7 +77,7 @@ function Chatbot() {
 
     // Agregar la respuesta del bot al estado
     const nuevoMensajeBot = {
-      contenido: response.respuesta_bot.trim(),
+      contenido: response.respuesta_bot,
       remitente: "bot",
       timestamp: new Date().toLocaleTimeString(),
     };
