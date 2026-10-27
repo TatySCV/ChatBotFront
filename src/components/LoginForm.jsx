@@ -5,6 +5,8 @@ import Input from "./Input";
 import Button from "./Button";
 import ErrorMessage from "./ErrorMessage";
 import { useSession } from "../context/session-context";
+import { loginUser } from "../services/authService";
+import { BsRobot } from "react-icons/bs";
 
 function LoginForm() {
   const [username, setUsername] = useState("");
@@ -13,15 +15,12 @@ function LoginForm() {
   const { login, setIsAuth } = useSession();
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (username === "user" && password === "password") {
-      const user = {
-        id: 1,
-        username: "user",
-      };
-      localStorage.setItem("user", JSON.stringify({ username }));
+      const { success, usuario, error: errorMessage } = await loginUser(username, password);
+
+    if (success) {
       setIsAuth(true);
       login(user);
       navigate("/", {
@@ -35,9 +34,10 @@ function LoginForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-96 mx-auto mt-12 p-6 bg-white rounded-lg "
+      className="w-96 mx-auto mt-12 p-6 bg-white rounded-lg flex flex-col items-center"
     >
-      <h2 className="text-2xl text-center mb-6 font-bold text-purple-600">
+      <BsRobot size={100} className="text-primary"/>
+      <h2 className="text-2xl text-center mb-6 font-bold text-primary">
         Iniciar sesión
       </h2>
       <Input

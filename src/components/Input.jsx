@@ -6,7 +6,7 @@ function Input({ type, placeholder, value, onChange }) {
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        className="border border-gray-300 p-3 rounded-md mb-4 w-full focus:outline-none focus:ring-2 focus:ring-purple-500"
+        className="border border-secondary p-3 rounded-md mb-4 w-full focus:outline-none focus:ring-2 focus:ring-primary"
       />
     );
   }
