@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:9010/general/logout/';  // URL del backend
+const API_URL = 'http://127.0.0.1:8000/general/logout/';  // URL del backend
 
 // services/authService.js
 export const logoutUser = async() => {

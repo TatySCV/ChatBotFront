@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:9010/general/chatbot";
+const API_URL = 'http://127.0.0.1:8000/general/chatbot';  // URL del backend
 
 const chatService = {
   getConversaciones: async (user) => {

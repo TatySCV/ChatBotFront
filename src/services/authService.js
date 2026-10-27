@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:9010/general/login/';  // URL del backend
+const API_URL = 'http://127.0.0.1:8000/general/login/';  // URL del backend
 
 // Función para iniciar sesión
 export const loginUser = async (username, password) => {
